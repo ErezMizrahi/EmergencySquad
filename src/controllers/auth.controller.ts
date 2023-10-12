@@ -13,15 +13,14 @@ export const signin = async (req: Request, res: Response) => {
         id: existingUser.id,
         email: existingUser.email
     });
-  
-    res.cookie('jwt', token)
+
+    res.cookie('jwt', token);
     
     res.status(200).json(existingUser);
 }
 
 export const signout = (req: Request, res: Response) => {
-    req.session = null;
-    res.status(200).send({});
+    res.clearCookie("jwt").status(200).send({});
 }
 
 export const signup = async (req: Request, res: Response) => {
@@ -34,9 +33,7 @@ export const signup = async (req: Request, res: Response) => {
         email: user.email
     });
   
-    req.session = {
-        jwt: token
-    };
+    res.cookie('jwt', token);
 
     res.status(201).json(user);
 }

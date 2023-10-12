@@ -15,6 +15,7 @@ declare global {
 }
 
 export const currentUser = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.cookies)
     if(!req.cookies?.jwt) {
         return next();
     }

@@ -14,9 +14,7 @@ export const signin = async (req: Request, res: Response) => {
         email: existingUser.email
     });
   
-    req.session = {
-        jwt: token
-    };
+    res.cookie('jwt', token)
     
     res.status(200).json(existingUser);
 }

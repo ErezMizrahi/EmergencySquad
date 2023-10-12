@@ -10,7 +10,6 @@ const router = Router();
 
 router.use(currentUser);
 
-
 router.get('/', getMySquad);
 
 router.post('/create', requireAuth ,[
@@ -22,12 +21,7 @@ router.post('/create', requireAuth ,[
         .withMessage('description must be valid'),
     body('location')
         .notEmpty()
-        .withMessage('location must be valid'),
-    body('admin')
-        .not()
-        .isEmpty()
-        .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-        .withMessage('admin id must be provided')
+        .withMessage('location must be valid')
 ], validateRquest, createNewSquad);
 
 router.post('/add-members', requireAuth, [
@@ -36,7 +30,11 @@ router.post('/add-members', requireAuth, [
         .not()
         .isEmpty()
         .withMessage('members must be provided'),
-        
+    body('squadId')
+        .not()
+        .isEmpty()
+        .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
+        .withMessage('squad id must be provided')
 ], validateRquest, addMembers);
 
 router.post('/delete', requireAuth, [

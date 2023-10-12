@@ -5,6 +5,7 @@ import { NotFoundError } from './errors/notFound.error';
 import { errorHanlder } from './middleware/error.middleware';
 import { authRoute } from './routes/auth.route';
 import cookieParser from 'cookie-parser';
+import { squadRoute } from './routes/squads.route';
 
 const app = express();
 
@@ -16,7 +17,9 @@ app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 
 //routes
-app.use('/api/auth', authRoute)
+app.use('/api/auth', authRoute);
+app.use('/api/squad', squadRoute);
+
 app.all('*', async () => { throw new NotFoundError() });
 
 //error handling

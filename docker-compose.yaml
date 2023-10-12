@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  node-app:
+    build: 
+      context: .
+      dockerfile: ./src/Dockerfile
+    environment:
+      - MONGO_URI=mongodb://localhost:27017/emergency-squad
+      - JWT_KEY=asdasdqwdqwdgrgreherhl
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    volumes:
+      - .:/src
+    networks:
+      - node-network
+
+  mongo:
+    restart: always
+    image: mongo:4.2.0
+    volumes:
+      - ./data:/data/db
+    networks:
+      - express-mongo
+    expose:
+      - 27017
+
+volumes:
+  dbdata6:
+
+networks:
+  node-network:
+  express-mongo:

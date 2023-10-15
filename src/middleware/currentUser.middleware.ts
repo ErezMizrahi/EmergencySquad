@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 interface UserPayload {
-    id: string,
-    email: string
+    id: string;
+    email: string;
+    pushToken?: string;
 }
 
 declare global {

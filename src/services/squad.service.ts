@@ -58,6 +58,7 @@ class SquadService {
             members: members
         });
 
+
         await squad.save();
         return squad;
     }

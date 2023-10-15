@@ -1,8 +1,9 @@
 import { Router } from 'express'
-import { getCurrentUser, signin, signout, signup } from '../controllers/auth.controller';
-import { body } from 'express-validator';
+import { getCurrentUser, signin, signout, signup, updatePushToken } from '../controllers/auth.controller';
+import { body, param } from 'express-validator';
 import { currentUser } from '../middleware/currentUser.middleware';
 import { validateRquest } from '../middleware/validateRequest.middleware';
+import { requireAuth } from '../middleware/requireAuth.middleware';
 
 const router = Router();
 
@@ -29,5 +30,12 @@ router.post('/signup', [
         .isLength({ min: 4, max: 20 })
         .withMessage('Password must be betweeb 4-20 characters')
 ], validateRquest, signup);
+
+router.put('/update-token/:pushToken',currentUser, requireAuth, [
+    param('pushToken')
+    .not()
+    .isEmpty()
+    .withMessage('token is required'),
+], validateRquest, updatePushToken);
 
 export { router as authRoute }

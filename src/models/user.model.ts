@@ -6,7 +6,8 @@ import { SquadDocument } from "./squad.model";
 interface UserAttrs { 
     email: string,
     password: string,
-    isMemberInSquad: boolean
+    isMemberInSquad: boolean,
+    pushToken?: string
 
 }
 
@@ -19,7 +20,9 @@ interface UserModel extends Model<UserDocument> {
 export interface UserDocument extends Document{ 
     email: string,
     password: string,
-    isMemberInSquad: boolean
+    isMemberInSquad: boolean,
+    pushToken?: string
+
 }
 
 const userSchema = new Schema({
@@ -33,6 +36,9 @@ const userSchema = new Schema({
     },
     isMemberInSquad: {
         type: Boolean,
+    },
+    pushToken: {
+        type: String,
     }
 }, {
     toJSON: {

@@ -4,11 +4,12 @@ import { PassowrdService } from "./password.service";
 import { BadRequestError } from "../errors/badRequest.error";
 
 interface JWTAttrs {
-    id: string,
-    email: string
+    id: string;
+    email: string;
+    pushToken?: string;
 }
 
-export class UserService {
+class UserService {
 
     generateJwt (payload: JWTAttrs): string {
         return jwt.sign(payload , process.env.JWT_KEY!);
@@ -22,22 +23,21 @@ export class UserService {
             const user = User.build({
                 email,
                 password,
-                isMemberInSquad: false
+                isMemberInSquad: false,
+                pushToken: undefined,
             });
     
             await user.save();
-            console.log(user)
             return user;
         
     }
 
-    private async findUser (email: string): Promise<UserDocument | null> {
+    private async   findUser (email: string): Promise<UserDocument | null> {
         return await User.findOne({ email });
     }
 
     async isUserExists(email: string, password: string): Promise<UserDocument> {
         const user = await this.findUser(email);
-        console.log('user', user);
         if(!user) {
             throw new BadRequestError('Invalid login credentials');
         }
@@ -48,4 +48,21 @@ export class UserService {
 
         return user;
     }
+
+    async updatePushToken(token: string, currentUserEmail: string): Promise<UserDocument> {
+        const user = await this.findUser(currentUserEmail);
+        
+        if(!user) {
+            throw new BadRequestError('user not found');
+        }
+
+        user.set({ pushToken: token });
+
+        await user.save();
+
+        return user;
+    }
 }
+
+const userService = new UserService();
+export default userService;

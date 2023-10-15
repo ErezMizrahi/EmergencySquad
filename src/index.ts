@@ -8,6 +8,7 @@ const start = async () => {
     try {
         if(!process.env.JWT_KEY) throw new Error('JWT_KEY must be defiend');
         if(!process.env.MONGO_URI) throw new Error('MONGO_URI must be defiend');
+        if(!process.env.EXPO_ACCESS_TOKEN) throw new Error('EXPO_ACCESS_TOKEN must be defiend');
 
         await mongoose.connect(process.env.MONGO_URI);
         console.log('connected to mongodb');

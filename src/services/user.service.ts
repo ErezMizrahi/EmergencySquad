@@ -21,10 +21,12 @@ export class UserService {
     
             const user = User.build({
                 email,
-                password
+                password,
+                isMemberInSquad: false
             });
     
             await user.save();
+            console.log(user)
             return user;
         
     }
@@ -35,6 +37,7 @@ export class UserService {
 
     async isUserExists(email: string, password: string): Promise<UserDocument> {
         const user = await this.findUser(email);
+        console.log('user', user);
         if(!user) {
             throw new BadRequestError('Invalid login credentials');
         }

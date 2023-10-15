@@ -4,13 +4,13 @@ import { currentUser } from '../middleware/currentUser.middleware';
 import { validateRquest } from '../middleware/validateRequest.middleware';
 import { requireAuth } from '../middleware/requireAuth.middleware';
 import mongoose from 'mongoose';
-import { addMembers, createNewSquad, deleteSquad, getMySquad } from '../controllers/squad.controller';
+import { addMembers, createNewSquad, deleteSquad, getMySquad, removeMembers } from '../controllers/squad.controller';
 
 const router = Router();
 
 router.use(currentUser);
 
-router.get('/', getMySquad);
+router.get('/', requireAuth, getMySquad);
 
 router.post('/create', requireAuth ,[
     body('name')
@@ -36,6 +36,13 @@ router.post('/add-members', requireAuth, [
         .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
         .withMessage('squad id must be provided')
 ], validateRquest, addMembers);
+
+router.post('/remove-member', requireAuth, [
+    body('member')
+        .not()
+        .isEmpty()
+        .withMessage('member email must be provided'),
+], validateRquest, removeMembers);
 
 router.post('/delete', requireAuth, [
     body('squadId')

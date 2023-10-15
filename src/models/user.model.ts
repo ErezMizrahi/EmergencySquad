@@ -1,10 +1,13 @@
 import {model, Schema, Model, Document } from "mongoose";
 import { PassowrdService } from "../services/password.service";
+import { SquadDocument } from "./squad.model";
 
 //interface that desribe the props to create a new user 
 interface UserAttrs { 
     email: string,
-    password: string
+    password: string,
+    isMemberInSquad: boolean
+
 }
 
 //an interface that desbribe the props that a model has
@@ -15,7 +18,8 @@ interface UserModel extends Model<UserDocument> {
 // interface that describe the props that a document has
 export interface UserDocument extends Document{ 
     email: string,
-    password: string
+    password: string,
+    isMemberInSquad: boolean
 }
 
 const userSchema = new Schema({
@@ -26,9 +30,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    isMemberInSquad: {
+        type: Boolean,
     }
 }, {
-    // timestamps: true,
     toJSON: {
         transform(doc, ret) {
             ret.id = ret._id;

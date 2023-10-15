@@ -5,7 +5,8 @@ import { UserDocument } from "../models/user.model";
 
 
 export const getMySquad = async (req: Request, res: Response) => {
-    res.status(200).json({ });
+    const squad = await squadService.getSquad(req.currentUser!.id);
+    res.status(200).json(squad);
 }
 
 export const createNewSquad = async (req: Request, res: Response) => {
@@ -18,6 +19,14 @@ export const createNewSquad = async (req: Request, res: Response) => {
 export const addMembers = async (req: Request, res: Response) => {
     const { members, squadId } = req.body;
     const squad = await squadService.addMembersToSquad(members, squadId);
+    res.status(200).json(squad);
+
+} 
+
+export const removeMembers = async (req: Request, res: Response) => {
+    const { member } = req.body;
+    const currentUserId = req.currentUser!.id;
+    const squad = await squadService.removeMember(member, currentUserId);
     res.status(200).json(squad);
 
 } 
